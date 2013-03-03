@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Place Place</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="/prefixfree.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>placeplace</h1>
+        <h2>
+            A collection of image placeholder services.
+            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> 
+        </h2>
+    </header>
+    
+    <section id="sites"></section>
+    
+    <footer>
+        <h4>placeplace is brought to you by <a href="http://bennettfeely.com">Bennett Feely</a> <a href="https://twitter.com/bennettfeely">@bennettfeely</a>.</h4>
+        <a class="contribute" href="https://github.com/bennettfeely/placeplace">Contribute to this collection on github.</a>
+    </footer>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>
+    $sites = $("#sites");
+
+    $(function(){
+        $.ajaxSetup({ cache: true });
+
+        $.getJSON("placeholders.json", function(data) {
+            $("section").addClass("on");
+            $.each(data.links, function(i, item){
+                
+                var url = item.url;
+                var title = item.title;
+                
+                var place  = '<a class="place place-' + i + '" href="' + url + '">';
+                    place += '<h3>' + title + '<\/h3>';
+                    place += '<figure><\/figure>';
+                    place += '<\/a>';
+                
+                $sites.append(place);
+            });
+            
+            $.each(data.links, function(i, item){
+                                
+                var thumb = item.thumb;
+                    square = thumb.replace("width",144).replace("height",144);
+                    portrait = thumb.replace("width",80).replace("height",144);
+                    landscape = thumb.replace("width",224).replace("height",80);
+                
+                var square = '<img src="' + square + '" class="square" width="150px" height="150px" />';
+                var portrait = '<img src="' + portrait + '" class="portrait" width="75px" height="150px" />';
+                var landscape = '<img src="' + landscape + '" class="landscape" width="225px" height="75px" />';
+
+                    var images = square + portrait + landscape;  
+                if((i+1) % 3 == 0){ var images = landscape + portrait + square;   }
+                if((i+2) % 3 == 0){ var images = portrait + square + landscape;   }
+                 
+                $('.place-' + i + ' figure').append(images);
+                
+            });
+         });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+      * { margin:0; padding:0; }
+  
+html { text-align:center;  }
+body {
+    display:inline-block;
+    font:100%/1.5 "Lato", sans-serif;
+    padding:2rem;
+    background:#F0EFE7;
+    overflow-y:scroll;
+    max-width:80rem;
+    border-radius:2rem;
+}
+
+header, section, footer { padding:1rem 0; }
+
+h1, h2, h3 {
+    display:block;
+    font-weight:400;
+    font-size:1.2rem; 
+}
+
+h1, h2 { padding:0 2rem; }
+
+a { display:inline-block; text-decoration:none; transition:.5s; user-select:none; }
+
+h1 { font-size:4em; }
+h2 { line-height:2.5; }
+    iframe { vertical-align:middle; margin-left:1rem; }
+
+h3 {
+    display:block;
+    padding:.75rem 1rem;
+    font-size:1rem;
+}
+h3:hover { text-decoration:underline; }
+a:hover { transition:0; }
+
+
+h4 { font-weight:400; color:gray; }
+h4 a { color:black; opacity:.8; }
+h4 a:hover { opacity:1; }
+.contribute { padding:1rem; background:rgba(0,0,0,.05); border-radius:.5rem; margin-top:1.5rem; color:black; }
+.contribute:hover { background:black; color:whitesmoke; transition:0; }
+
+
+.place { 
+    color:black;
+    font-size:1rem;
+    margin:1rem;
+    border-radius:.5rem;
+    padding:.25rem;
+    background:rgba(0,0,0,.05);        
+}
+.place:hover {
+    background:black;
+    color:whitesmoke;
+    transition:0;
+}
+.place:active {
+    background:dodgerblue;
+    color:black;
+}
+
+figure {
+    width:14rem;
+    height:14rem;
+    padding:1rem;
+    background:white;
+    border-radius:0 0 .25rem .25rem;
+}
+
+img {
+    float:left;
+    transform:scale(.95);
+    transition:.4s;
+    background:whitesmoke;
+}
+    .square { width:9rem; height:9rem; }
+    .landscape { width:14rem; height:5rem; }
+    .portrait { width:5rem; height:9rem; }
+
+a:hover img { transform:scale(.9); }
+a:hover img:hover { transform:scale(1); }
+
+
+
+
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/9k-RPmcnxYEPm8CNFsH2gg.woff) format('woff');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Lato Bold'), local('Lato-Bold'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/wkfQbvfT_02e2IWO3yYueQ.woff) format('woff');
+}
