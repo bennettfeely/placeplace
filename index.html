@@ -1,72 +1,158 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HAHAHAHAHHAHAHAHA TEST</title>
+    <title>placeplace</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link id="page_favicon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAATElEQVQ4T2NcvXr1fwYkEBoaygjiEivOSKxCXAbDDYApQHYNPjbMYsoNINZGXOrAAUYJoNwLsMAYuECk2AWUBCBI73CKBVhY0D03AgBEs2QRoloV6wAAAABJRU5ErkJggg==" rel="icon" type="image/x-icon">
     <link rel="shortcut icon" href="favicon.png">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="js/prefixfree.min.js"></script>
+    <script src="/prefixfree.js"></script>
 </head>
 <body>
 
     <header>
-        <h1>placeplace</h1>
-        <h2>
-            A collection of image placeholder services.
-            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> 
+        <h1 data-filter="*">placeplace</h1>
+        <h2>A collection of placeholder services for you.
+            <a href="https://twitter.com/share" class="twitter-share-button" data-text="placeplace: a collection of placeholder services">Tweet</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>        </h2>
         </h2>
+        <menu>
+            <nav class="button">
+                <a id="images" data-filter=".placeimg">Images</a>
+                <span>
+                    <a data-filter=".food.placeimg">Food</a>
+                    <a data-filter=".animals">Animals</a>
+                    <a data-filter=".people">People</a>
+                    <a data-filter=".dimensions">Dimensions</a>
+                </span>
+            </nav>
+            <nav class="button">
+                <a id="text" data-filter=".placetext">Text</a>
+                <span>
+                    <a data-filter=".placetext:not(.explicit)">Clean</a>
+                    <a data-filter=".food.placetext">Food</a>
+                    <a data-filter=".code">Code</a>
+                </span>
+            </div>
+        </menu>
     </header>
+
+    <section id="places"></section>
+        
+        <footer>
+            <h4>This collection is brought to you by <a href="http://bennettfeely.com">Bennett Feely</a>
+                <a href="https://twitter.com/bennettfeely" class="twitter-follow-button" data-show-count="false">Follow @bennettfeely</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </h4>
+            <h4>Uses by <a href="http://isotope.metafizzy.co/index.html">Isotope</a> by David Desandro/Metafizzy. Webfont <a href="http://www.google.com/fonts/specimen/Lato">Lato</a>.</h4>
+            <h4></h4>
+            <a class="contribute" href="https://github.com/bennettfeely/placeplace">Contribute to this collection on GitHub</a>
+        </footer>
+
     
-    <section id="sites"></section>
-    
-    <footer>
-        <h4>placeplace is brought to you by <a href="http://bennettfeely.com">Bennett Feely</a> <a href="https://twitter.com/bennettfeely">@bennettfeely</a>.</h4>
-        <a class="contribute" href="https://github.com/bennettfeely/placeplace">Contribute to this collection on github.</a>
-    </footer>
+
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="isotope.min.js"></script>
 <script>
-    $sites = $("#sites");
+    $places = $("#places");
 
     $(function(){
         $.ajaxSetup({ cache: true });
-
+        
+        
         $.getJSON("placeholders.json", function(data) {
-            $("section").addClass("on");
-            $.each(data.links, function(i, item){
-                
+
+            totalplaces = data.placeimages.length + data.placetext.length;
+                        
+            $.each(data.placeimages, function(i, item){  
                 var url = item.url;
                 var title = item.title;
-                
-                var place  = '<a class="place place-' + i + '" href="' + url + '">';
+                var category = item.category;
+    
+                var place  = '<a class="place placeimg ' + category + ' placeimg-' + i + '" href="' + url + ' ">';
                     place += '<h3>' + title + '<\/h3>';
                     place += '<figure><\/figure>';
                     place += '<\/a>';
                 
-                $sites.append(place);
-            });
+                $places.append(place);
+            }); 
             
-            $.each(data.links, function(i, item){
-                                
+            $.each(data.placetext, function(i, item){
+                var charlen = 255;
+                            
+                var url = item.url;
+                var title = item.title;
+                var category = item.category;
+                    if(category == "code"){ var charlen = 340; }
+                    
+                var length = $("#places a").length;
+                var rand = Math.floor(Math.random() * length);
+                console.log(length + ' ==== ' + rand);
+
+                var sample = $.trim(item.sample).substring(0, charlen).split(" ").slice(0, -1).join(" ") + "...";
+
+                var place  = '<a class="place placetext ' + category + '  placetext" href="' + url + '">';
+                    place += '<h3>' + title + '<\/h3>';
+                    place += '<figure>' + sample + '<\/figure>';
+                    place += '<\/a>';
+                
+                $places.append(place);
+                
+                if($("a", $places).length == totalplaces) {
+                    console.log("finished");
+          $places.isotope({ sortBy : 'random', filter: '*' });
+                    
+                }
+            });   
+            
+        $.each(data.placeimages, function(i, item){        
                 var thumb = item.thumb;
-                    square = thumb.replace("width",144).replace("height",144);
-                    portrait = thumb.replace("width",80).replace("height",144);
-                    landscape = thumb.replace("width",224).replace("height",80);
+                    square = thumb.replace("width", 150).replace("height", 150);
+                    portrait = thumb.replace("width", 75).replace("height", 150);
+                    landscape = thumb.replace("width", 225).replace("height", 75);
                 
                 var square = '<img src="' + square + '" class="square" width="150px" height="150px" />';
                 var portrait = '<img src="' + portrait + '" class="portrait" width="75px" height="150px" />';
                 var landscape = '<img src="' + landscape + '" class="landscape" width="225px" height="75px" />';
 
                     var images = square + portrait + landscape;  
-                if((i+1) % 3 == 0){ var images = landscape + portrait + square;   }
-                if((i+2) % 3 == 0){ var images = portrait + square + landscape;   }
+                if((i+1) % 3 == 0){ var images = landscape + portrait + square; }
+                if((i+2) % 3 == 0){ var images = portrait + square + landscape; }
                  
-                $('.place-' + i + ' figure').append(images);
-                
+                $('.placeimg-' + i + ' figure').append(images);
             });
-         });
+
+
+            
+        $("#images, #text").hover( function(){  $(this).parent().addClass("hover"); }, function(){  $(this).parent().removeClass("hover"); } ) });
+        $("#images, #text").mousedown(function(){ $(this).parent().addClass("active"); }).mouseup(function(){ $(this).parent().removeClass("active"); });
+        
+
+        $("menu a").click(function(){
+          var selector = $(this).attr('data-filter');
+          $places.isotope({ sortBy : 'random', filter: selector });
+          return false;
+        });
+        
+        $("h1").click(function(){
+            console.log("click");
+          $places.isotope({ sortBy : 'random', filter: '*' });
+        });
     });
+</script>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-35724550-1']);
+  _gaq.push(['_setDomainName', 'bennettfeely.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 </script>
 </body>
 </html>
