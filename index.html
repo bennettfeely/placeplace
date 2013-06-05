@@ -37,58 +37,61 @@
         </menu>
     </header>
 
+    <!-- this is where the placeholder site cards go -->
     <section id="places"></section>
-        
-        <footer>
-            <h4>This collection is brought to you by <a href="http://bennettfeely.com">Bennett Feely</a>
-                <a href="https://twitter.com/bennettfeely" class="twitter-follow-button" data-show-count="false">Follow @bennettfeely</a>
-                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-            </h4>
-            <h4>Uses by <a href="http://isotope.metafizzy.co/index.html">Isotope</a> by David Desandro/Metafizzy. Webfont <a href="http://www.google.com/fonts/specimen/Lato">Lato</a>.</h4>
-            <h4></h4>
-            <a class="contribute" href="https://github.com/bennettfeely/placeplace">Contribute to this collection on GitHub</a>
-        </footer>
 
-    
+    <footer>
+        <h4>This collection is brought to you by <a href="http://bennettfeely.com">Bennett Feely</a>
+            <a href="https://twitter.com/bennettfeely" class="twitter-follow-button" data-show-count="false">Follow @bennettfeely</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </h4>
+        <h4>Uses by <a href="http://isotope.metafizzy.co/index.html">Isotope</a> by David Desandro/Metafizzy. Webfont <a href="http://www.google.com/fonts/specimen/Lato">Lato</a>.</h4>
+        <a class="contribute" href="https://github.com/bennettfeely/placeplace">Contribute to this collection on GitHub</a>
+    </footer>
+
+
 
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="isotope.min.js"></script>
 <script>
+
+    // FYI: I am currently a javascript/jQuery noob...
+    // Please tell me what I could be doing better. I want to get better at javascript!
+    
     $places = $("#places");
 
     $(function(){
         $.ajaxSetup({ cache: true });
-        
-        
+
         $.getJSON("placeholders.json", function(data) {
 
             totalplaces = data.placeimages.length + data.placetext.length;
-                        
-            $.each(data.placeimages, function(i, item){  
+
+            // Put up the placeimages links
+            // We will add the sample images later to speed things up
+            $.each(data.placeimages, function(i, item){
                 var url = item.url;
                 var title = item.title;
                 var category = item.category;
-    
+
                 var place  = '<a class="place placeimg ' + category + ' placeimg-' + i + '" href="' + url + ' ">';
                     place += '<h3>' + title + '<\/h3>';
                     place += '<figure><\/figure>';
                     place += '<\/a>';
-                
+
                 $places.append(place);
-            }); 
-            
+            });
+
+
+            // Add the placetext links with a sample of text
             $.each(data.placetext, function(i, item){
                 var charlen = 255;
-                            
+
                 var url = item.url;
                 var title = item.title;
                 var category = item.category;
                     if(category == "code"){ var charlen = 340; }
-                    
-                var length = $("#places a").length;
-                var rand = Math.floor(Math.random() * length);
-                console.log(length + ' ==== ' + rand);
 
                 var sample = $.trim(item.sample).substring(0, charlen).split(" ").slice(0, -1).join(" ") + "...";
 
@@ -96,47 +99,63 @@
                     place += '<h3>' + title + '<\/h3>';
                     place += '<figure>' + sample + '<\/figure>';
                     place += '<\/a>';
-                
+
                 $places.append(place);
-                
+
+                // Find out when we are done adding the places and randomize them
+                // I should think of a better way to do this...
                 if($("a", $places).length == totalplaces) {
                     console.log("finished");
                     $places.isotope({ sortBy : 'random', filter: '*' });
                 }
-            });   
-            
-        $.each(data.placeimages, function(i, item){        
+            });
+
+            // Add the sample images to the placeimages links
+            $.each(data.placeimages, function(i, item){
                 var thumb = item.thumb;
                     square = thumb.replace("width", 150).replace("height", 150);
                     portrait = thumb.replace("width", 75).replace("height", 150);
                     landscape = thumb.replace("width", 225).replace("height", 75);
-                
+    
                 var square = '<img src="' + square + '" class="square" width="150px" height="150px" />';
                 var portrait = '<img src="' + portrait + '" class="portrait" width="75px" height="150px" />';
                 var landscape = '<img src="' + landscape + '" class="landscape" width="225px" height="75px" />';
-
-                    var images = square + portrait + landscape;  
+    
+                    var images = square + portrait + landscape;
                 if((i+1) % 3 == 0){ var images = landscape + portrait + square; }
                 if((i+2) % 3 == 0){ var images = portrait + square + landscape; }
-                 
+    
                 $('.placeimg-' + i + ' figure').append(images);
             });
 
 
-            
-        $("#images, #text").hover( function(){  $(this).parent().addClass("hover"); }, function(){  $(this).parent().removeClass("hover"); } ) });
-        $("#images, #text").mousedown(function(){ $(this).parent().addClass("active"); }).mouseup(function(){ $(this).parent().removeClass("active"); });
+        // Toggle hover state over whole menu when hovering over first filter link
+        $("#images, #text").hover(function() {
+                $(this).parent().addClass("hover");
+            }, function() {
+                $(this).parent().removeClass("hover");
+            })
+        });
+        
+        // Toggle active state over whole menu when clicking first filter link        
+        $("#images, #text").mousedown(function() {
+            $(this).parent().addClass("active");
+        }).mouseup(function() {
+            $(this).parent().removeClass("active");
+        });
         
 
+        // Filter links using Isotope
         $("menu a").click(function(){
           var selector = $(this).attr('data-filter');
           $places.isotope({ sortBy : 'random', filter: selector });
           return false;
         });
         
+        // Clicking on the title shuffles things up
         $("h1").click(function(){
             console.log("click");
-          $places.isotope({ sortBy : 'random', filter: '*' });
+            $places.isotope({ sortBy : 'random', filter: '*' });
         });
     });
 </script>
