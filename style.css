@@ -27,8 +27,7 @@
 
 /* Header ===================================== */
     h1 { /* placeplace title */
-        font-size:3rem;
-        font-size:5vw;
+        font-size:4rem;
         font-weight:300;
         cursor:pointer;
         display:inline-block;
@@ -99,7 +98,6 @@
         background:#DCDBD4;
         transition:transform .6s, opacity .6s;
         vertical-align:middle;
-        transform:translate3d(150%,100%,0)
     }
     
     
@@ -184,22 +182,19 @@
 /* Responsive ================================= */
     @media (max-width:70.5rem){
         body { width:52.5rem; }
-        .place( transform:translate3d(150%,100%,0); )
 
     }
     
     @media (max-width:53rem){
         body { width:35rem; }   
         menu { display:block; }
-        .place { transform:translate3d(50%,25%,0); } 
 
     }
     
     @media (max-width:35.5rem){
         body { width:17.5rem; }
+        h1 { font-size:3rem; }
         nav span { display:none; } /* I'm sorry. */
-        .place { transform:translate3d(0,50%,0); }
-
     }
 
 
