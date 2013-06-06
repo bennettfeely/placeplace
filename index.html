@@ -58,15 +58,13 @@
 
     // FYI: I am currently a javascript/jQuery noob...
     // Please tell me what I could be doing better. I want to get better at javascript!
-    
+
     $places = $("#places");
 
     $(function(){
         $.ajaxSetup({ cache: true });
 
         $.getJSON("placeholders.json", function(data) {
-
-            totalplaces = data.placeimages.length + data.placetext.length;
 
             // Put up the placeimages links
             // We will add the sample images later to speed things up
@@ -80,7 +78,8 @@
                     place += '<figure><\/figure>';
                     place += '<\/a>';
 
-                $places.append(place);
+                addPlace(place);
+
             });
 
 
@@ -100,14 +99,10 @@
                     place += '<figure>' + sample + '<\/figure>';
                     place += '<\/a>';
 
-                $places.append(place);
+                var rand = Math.random();
 
-                // Find out when we are done adding the places and randomize them
-                // I should think of a better way to do this...
-                if($("a", $places).length == totalplaces) {
-                    console.log("finished");
-                    $places.isotope({ sortBy : 'random', filter: '*' });
-                }
+                addPlace(place);
+
             });
 
             // Add the sample images to the placeimages links
@@ -116,17 +111,31 @@
                     square = thumb.replace("width", 150).replace("height", 150);
                     portrait = thumb.replace("width", 75).replace("height", 150);
                     landscape = thumb.replace("width", 225).replace("height", 75);
-    
+
                 var square = '<img src="' + square + '" class="square" width="150px" height="150px" />';
                 var portrait = '<img src="' + portrait + '" class="portrait" width="75px" height="150px" />';
                 var landscape = '<img src="' + landscape + '" class="landscape" width="225px" height="75px" />';
-    
+
                     var images = square + portrait + landscape;
                 if((i+1) % 3 == 0){ var images = landscape + portrait + square; }
                 if((i+2) % 3 == 0){ var images = portrait + square + landscape; }
-    
+
                 $('.placeimg-' + i + ' figure').append(images);
             });
+            
+        function addPlace(place){
+            // Shuffle the order of the places
+            // This is not a real good random order
+            var len = $("#places a").length;
+            var rand = Math.round(Math.random()*len);
+
+            if(len == 0){
+                $places.append(place);
+            }
+            else {
+                $("#places a").eq(rand).before(place);
+            }
+        }
 
 
         // Toggle hover state over whole menu when hovering over first filter link
@@ -136,14 +145,14 @@
                 $(this).parent().removeClass("hover");
             })
         });
-        
-        // Toggle active state over whole menu when clicking first filter link        
+
+        // Toggle active state over whole menu when clicking first filter link
         $("#images, #text").mousedown(function() {
             $(this).parent().addClass("active");
         }).mouseup(function() {
             $(this).parent().removeClass("active");
         });
-        
+
 
         // Filter links using Isotope
         $("menu a").click(function(){
@@ -151,7 +160,7 @@
           $places.isotope({ sortBy : 'random', filter: selector });
           return false;
         });
-        
+
         // Clicking on the title shuffles things up
         $("h1").click(function(){
             console.log("click");
