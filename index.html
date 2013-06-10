@@ -65,6 +65,8 @@
         $.ajaxSetup({ cache: true });
 
         $.getJSON("placeholders.json", function(data) {
+            
+            console.log("len: " + (data.placeimages.length + data.placetext.length));
 
             // Put up the placeimages links
             // We will add the sample images later to speed things up
@@ -78,8 +80,7 @@
                     place += '<figure><\/figure>';
                     place += '<\/a>';
 
-                addPlace(place);
-
+                $places.append(place);
             });
 
 
@@ -99,10 +100,7 @@
                     place += '<figure>' + sample + '<\/figure>';
                     place += '<\/a>';
 
-                var rand = Math.random();
-
-                addPlace(place);
-
+                $places.append(place);
             });
 
             // Add the sample images to the placeimages links
@@ -122,20 +120,6 @@
 
                 $('.placeimg-' + i + ' figure').append(images);
             });
-            
-        function addPlace(place){
-            // Shuffle the order of the places
-            // This is not a real good random order
-            var len = $("#places a").length;
-            var rand = Math.round(Math.random()*len);
-
-            if(len == 0){
-                $places.append(place);
-            }
-            else {
-                $("#places a").eq(rand).before(place);
-            }
-        }
 
 
         // Toggle hover state over whole menu when hovering over first filter link
